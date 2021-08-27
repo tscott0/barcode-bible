@@ -1,0 +1,6 @@
+#IntelliJ
+.idea/
+
+images/
+/target
+**/*.rs.bk
