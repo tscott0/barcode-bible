@@ -13,6 +13,8 @@ mod code;
 const PDF_PATH: &'static str = "output.pdf";
 const PDF_TITLE: &'static str = "Barcode Bible";
 const PDF_MARGIN_PX: i32 = 10;
+const PDF_BARCODE_SPACING: f32 = 10.0;
+const BARCODE_WIDTH_MULTIPLIER: usize = 10;
 
 fn main() {
     let codes = vec![
@@ -34,9 +36,14 @@ fn main() {
             let image_dir = "images";
             let path = format!("{}/{}.jpeg", image_dir, c.barcode);
 
-            let encoded = c
+            let encoded: Vec<u8> = c
                 .encode()
-                .expect(format!("failed to encode image {}", path).as_str());
+                .expect(format!("failed to encode image {}", path).as_str())
+                .iter()
+                .flat_map(|&v| {
+                    std::iter::repeat(v).take(BARCODE_WIDTH_MULTIPLIER)
+                })
+                .collect();
 
             let bytes = jpg
                 .generate(&encoded[..])
@@ -81,13 +88,19 @@ fn main() {
     doc.push(elements::Break::new(1.5));
 
     processed.iter().for_each(|(c, p)| {
-        doc.push(elements::Paragraph::default().string(c.barcode.clone()));
         doc.push(
             elements::Image::from_path(p)
                 .expect("Unable to load image")
                 .with_alignment(Alignment::Center),
         );
-        doc.push(elements::Break::new(1.5));
+        doc.push(elements::Break::new(0.5));
+
+        doc.push(
+            elements::Paragraph::default()
+                .string(c.barcode.clone())
+                .aligned(Alignment::Center),
+        );
+        doc.push(elements::Break::new(PDF_BARCODE_SPACING));
     });
 
     // Render the document and write it to a file
