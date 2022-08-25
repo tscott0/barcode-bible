@@ -1,0 +1,15 @@
+[[products]]
+barcode = "5012456228610"
+name = "Sandwich"
+
+[[products]]
+barcode = "5017934511138"
+name = "Crisps"
+
+[[products]]
+barcode = "5034912349680"
+name = "Lemonade"
+
+[[products]]
+barcode = "01132123"
+name = "Biscuits"

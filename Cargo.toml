@@ -6,5 +6,9 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+chrono = "0.4"
 barcoders = {version = "1.0.2", features = ["image"]}
 genpdf = { version = "0.2.0", features = ["images"]}
+clap = { version = "3.2.17", features = ["derive"] }
+toml = "0.5.9"
+serde = { version = "1.0.144", features = ["derive"] }
